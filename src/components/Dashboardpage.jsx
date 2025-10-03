@@ -1,0 +1,161 @@
+import React, { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
+
+const DashboardPage = ({ setCurrentPage, setIsLoggedIn, pantryItems = [], notifications = [] }) => {
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentPage('home');
+  };
+
+  // Get user name (you can make this dynamic later)
+  const userName = "Deepak";
+
+  // Calculate low stock items - with safety check
+  const lowStockItems = pantryItems ? pantryItems.filter(item => item.stock < 3) : [];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
+      <div className="max-w-[95%] mx-auto px-8 py-12">
+        {/* Header with Title, Back Button and Logout - Top Bar */}
+        <div className="flex justify-between items-center mb-12">
+          <h1 className="text-7xl font-black">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
+              Pulse360AI
+            </span>
+          </h1>
+          
+          <div className="flex gap-6">
+            <button
+              onClick={() => setCurrentPage('home')}
+              className="flex items-center gap-3 px-8 py-4 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            >
+              <ArrowLeft size={28} className="text-orange-600" />
+              <span className="text-xl font-semibold text-orange-600">Back to Home</span>
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="px-10 py-4 bg-red-600 rounded-3xl text-xl font-bold text-white hover:bg-red-700 transition-all shadow-lg"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* Welcome Message */}
+        <h2 className="text-6xl font-bold mb-16 text-gray-800 text-center">
+          Hi {userName}, here's your day at a glance.
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Left Column */}
+          <div className="space-y-10">
+            {/* Notifications Card */}
+            <div className="bg-yellow-300 rounded-3xl p-10 shadow-xl">
+              <div className="flex items-start gap-6 mb-8">
+                <div className="bg-white rounded-full p-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-4xl font-bold mb-6 text-gray-800">Notifications</h3>
+                  {notifications && notifications.length > 0 ? (
+                    notifications.map((notif, index) => (
+                      <p key={index} className="text-2xl text-gray-800 mb-3">{notif.message}</p>
+                    ))
+                  ) : (
+                    <p className="text-2xl text-gray-600">No notifications at the moment</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Pantry Stock Card */}
+            <div className="bg-yellow-300 rounded-3xl p-10 shadow-xl">
+              <h3 className="text-4xl font-bold mb-8 text-gray-800 text-center">Pantry Stock</h3>
+              <div className="bg-white rounded-3xl p-8">
+                <div className="flex justify-between mb-6 pb-4 border-b-4 border-gray-800">
+                  <span className="text-3xl font-bold text-gray-800">Item</span>
+                  <span className="text-3xl font-bold text-gray-800">Stock</span>
+                </div>
+                {pantryItems && pantryItems.length > 0 ? (
+                  pantryItems.slice(0, 5).map(item => (
+                    <div key={item.id} className="flex justify-between py-4 text-2xl text-red-800">
+                      <span>{item.name}</span>
+                      <span className="font-bold">{item.stock}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-2xl text-gray-600 text-center py-4">No pantry items available</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-10">
+            {/* Alert Messages */}
+            {lowStockItems && lowStockItems.length > 0 ? (
+              lowStockItems.map((item, index) => (
+                <div key={index} className={`rounded-3xl p-10 shadow-xl ${index === 0 ? 'bg-cyan-200' : 'bg-red-300'}`}>
+                  <div className="flex items-center gap-8">
+                    <div className="text-8xl">
+                      {index === 0 ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-28 w-28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-28 w-28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-4xl font-bold text-gray-800">
+                        {index === 0 ? `${item.name} running low, reorder in 2 days` : `Your ${item.name} went out of stock`}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-3xl p-10 shadow-xl bg-green-200">
+                <div className="text-center">
+                  <div className="text-8xl mb-4">✅</div>
+                  <h3 className="text-4xl font-bold text-gray-800">All items well stocked!</h3>
+                </div>
+              </div>
+            )}
+
+            {/* Order Tracking Card */}
+            <div className="bg-gray-100 rounded-3xl p-10 shadow-xl">
+              <h3 className="text-4xl font-bold mb-8 text-gray-800">Order Tracking</h3>
+              <div className="relative">
+                {/* Progress Bar */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-blue-500 rounded-full mb-3"></div>
+                    <span className="text-xl font-medium text-gray-800">Order Placed</span>
+                  </div>
+                  <div className="flex-1 h-2 bg-blue-500 mx-3"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-gray-300 rounded-full mb-3"></div>
+                    <span className="text-xl font-medium text-gray-800">Vendor</span>
+                  </div>
+                  <div className="flex-1 h-2 bg-gray-300 mx-3"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-red-300 rounded-full mb-3"></div>
+                    <span className="text-xl font-medium text-gray-800">Delivery</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardPage;
