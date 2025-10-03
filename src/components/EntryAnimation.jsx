@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 
 const EntryAnimation = ({ onAnimationComplete }) => {
   useEffect(() => {
-    // Automatically transition to home page after animation
     const timer = setTimeout(() => {
       onAnimationComplete();
-    }, 7000); // Increased to 7 seconds
+    }, 7000);
 
     return () => clearTimeout(timer);
   }, [onAnimationComplete]);
@@ -14,35 +13,35 @@ const EntryAnimation = ({ onAnimationComplete }) => {
     <div className="fixed inset-0 bg-gradient-to-br from-orange-500 via-red-500 to-pink-600 flex items-center justify-center overflow-hidden z-50">
       {/* Animated background circles */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-white/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-white/10 rounded-full animate-pulse delay-300"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-white/5 rounded-full animate-ping"></div>
+        <div className="absolute top-20 left-20 w-52 h-52 bg-white/10 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-72 h-72 bg-white/10 rounded-full animate-pulse delay-300"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/5 rounded-full animate-ping"></div>
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 text-center max-w-6xl px-8">
+      <div className="relative z-10 text-center max-w-5xl px-8">
         {/* Logo/Icon Animation */}
-        <div className="mb-12 animate-bounce-in">
-          <div className="text-9xl mb-6 animate-rotate-scale">
+        <div className="mb-10 animate-bounce-in">
+          <div className="text-7xl mb-5 animate-rotate-scale">
             🛒
           </div>
         </div>
 
         {/* Title Animation */}
-        <h1 className="text-8xl font-black text-white mb-6 animate-slide-up">
+        <h1 className="text-6xl font-black text-white mb-5 animate-slide-up">
           <span className="inline-block animate-fade-in-up" style={{ animationDelay: '0.3s' }}>Pulse</span>
           <span className="inline-block animate-fade-in-up text-cyan-300" style={{ animationDelay: '0.6s' }}>360</span>
           <span className="inline-block animate-fade-in-up" style={{ animationDelay: '0.9s' }}>AI</span>
         </h1>
 
         {/* Subtitle Animation */}
-        <p className="text-3xl text-white/90 font-medium animate-fade-in mb-12" style={{ animationDelay: '1.2s' }}>
+        <p className="text-2xl text-white/90 font-medium animate-fade-in mb-10" style={{ animationDelay: '1.2s' }}>
           Your Smart Grocery Partner
         </p>
 
         {/* Overview Text */}
-        <div className="animate-fade-in-up mt-12 bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 shadow-2xl" style={{ animationDelay: '1.8s' }}>
-          <p className="text-2xl text-white/95 leading-relaxed">
+        <div className="animate-fade-in-up mt-10 bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl" style={{ animationDelay: '1.8s' }}>
+          <p className="text-xl text-white/95 leading-relaxed">
             Experience the future of grocery shopping with AI-powered inventory management, 
             smart notifications, and personalized pantry tracking. 
             Never run out of essentials again!
@@ -50,13 +49,13 @@ const EntryAnimation = ({ onAnimationComplete }) => {
         </div>
 
         {/* Loading indicator */}
-        <div className="mt-16 animate-fade-in" style={{ animationDelay: '2.2s' }}>
+        <div className="mt-12 animate-fade-in" style={{ animationDelay: '2.2s' }}>
           <div className="flex justify-center gap-3">
-            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
           </div>
-          <p className="text-xl text-white/80 mt-6 animate-pulse">Loading your experience...</p>
+          <p className="text-lg text-white/80 mt-5 animate-pulse">Loading your experience...</p>
         </div>
       </div>
 

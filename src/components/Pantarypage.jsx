@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 
-const PantryPage = ({ setCurrentPage, pantryItems }) => {
+const PantryPage = ({ setCurrentPage, setIsLoggedIn, pantryItems }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentPage('home');
+  };
 
   const categories = [
     { id: 'all', name: 'All Items', icon: '📦' },
@@ -42,149 +47,104 @@ const PantryPage = ({ setCurrentPage, pantryItems }) => {
     ? extendedPantryItems 
     : extendedPantryItems.filter(item => item.category === selectedCategory);
 
-  const getStatusColor = (status) => {
+  const getStockColor = (status) => {
     switch(status) {
-      case 'low': return 'text-red-600 bg-red-100';
-      case 'good': return 'text-yellow-600 bg-yellow-100';
-      case 'excellent': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'low': return 'bg-red-100 border-red-400 text-red-800';
+      case 'good': return 'bg-yellow-100 border-yellow-400 text-yellow-800';
+      case 'excellent': return 'bg-green-100 border-green-400 text-green-800';
+      default: return 'bg-gray-100 border-gray-400 text-gray-800';
     }
   };
-
-  const getStatusText = (status) => {
-    switch(status) {
-      case 'low': return 'Low Stock';
-      case 'good': return 'Good Stock';
-      case 'excellent': return 'Well Stocked';
-      default: return 'Unknown';
-    }
-  };
-
-  const lowStockCount = extendedPantryItems.filter(item => item.status === 'low').length;
-  const goodStockCount = extendedPantryItems.filter(item => item.status === 'good').length;
-  const excellentStockCount = extendedPantryItems.filter(item => item.status === 'excellent').length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <div className="max-w-[95%] mx-auto px-8 py-12">
-        {/* Header with Title and Back Button */}
-        <div className="flex items-center justify-between mb-12">
-          <h1 className="text-7xl font-black">
+        {/* Header with Title, Back Button and Logout */}
+        <div className="flex items-center justify-between mb-10">
+          <h1 className="text-5xl font-black">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
               Pulse360AI
             </span>
           </h1>
-          <button
-            onClick={() => setCurrentPage('home')}
-            className="flex items-center gap-3 px-8 py-4 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            <ArrowLeft size={28} className="text-orange-600" />
-            <span className="text-xl font-semibold text-orange-600">Back to Home</span>
-          </button>
+          
+          <div className="flex gap-4">
+            <button
+              onClick={() => setCurrentPage('home')}
+              className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            >
+              <ArrowLeft size={20} className="text-orange-600" />
+              <span className="text-base font-semibold text-orange-600">Back to Home</span>
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-6 py-3 bg-red-600 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 hover:bg-red-700"
+            >
+              <LogOut size={20} className="text-white" />
+              <span className="text-base font-semibold text-white">Logout</span>
+            </button>
+          </div>
         </div>
 
-        <h2 className="text-7xl font-bold text-center mb-16 text-orange-600">Your Smart Pantry</h2>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-          <div className="bg-white rounded-3xl p-8 shadow-xl text-center">
-            <div className="text-6xl font-bold text-orange-600 mb-3">{extendedPantryItems.length}</div>
-            <div className="text-2xl text-gray-700">Total Items</div>
-          </div>
-          <div className="bg-white rounded-3xl p-8 shadow-xl text-center">
-            <div className="text-6xl font-bold text-green-500 mb-3">{excellentStockCount}</div>
-            <div className="text-2xl text-gray-700">Well Stocked</div>
-          </div>
-          <div className="bg-white rounded-3xl p-8 shadow-xl text-center">
-            <div className="text-6xl font-bold text-yellow-500 mb-3">{goodStockCount}</div>
-            <div className="text-2xl text-gray-700">Good Stock</div>
-          </div>
-          <div className="bg-white rounded-3xl p-8 shadow-xl text-center">
-            <div className="text-6xl font-bold text-red-500 mb-3">{lowStockCount}</div>
-            <div className="text-2xl text-gray-700">Low Stock</div>
-          </div>
-        </div>
+        <h2 className="text-4xl font-bold mb-10 text-orange-600 text-center">My Pantry</h2>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {categories.map(cat => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-8 py-4 rounded-full text-2xl font-semibold transition-all ${
-                selectedCategory === cat.id 
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-110 shadow-xl' 
+              className={`p-5 rounded-3xl font-semibold transition-all ${
+                selectedCategory === cat.id
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl scale-105'
                   : 'bg-white text-orange-600 hover:bg-orange-100 shadow-md'
               }`}
             >
-              <span className="mr-2">{cat.icon}</span>
-              {cat.name}
+              <div className="text-4xl mb-3">{cat.icon}</div>
+              <div className="text-base">{cat.name}</div>
             </button>
           ))}
         </div>
 
-        {/* Pantry Items Table */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                <tr>
-                  <th className="px-8 py-6 text-left text-2xl font-bold">#</th>
-                  <th className="px-8 py-6 text-left text-2xl font-bold">Item Name</th>
-                  <th className="px-8 py-6 text-center text-2xl font-bold">Stock Remaining</th>
-                  <th className="px-8 py-6 text-center text-2xl font-bold">Status</th>
-                  <th className="px-8 py-6 text-center text-2xl font-bold">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.map((item, index) => (
-                  <tr 
-                    key={item.id} 
-                    className={`border-b border-gray-200 hover:bg-orange-50 transition-colors ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                    }`}
-                  >
-                    <td className="px-8 py-6 text-gray-800 font-semibold text-2xl">
-                      {index + 1}
-                    </td>
-                    <td className="px-8 py-6 text-gray-800 font-semibold text-2xl">
-                      {item.name}
-                    </td>
-                    <td className="px-8 py-6 text-center">
-                      <span className="text-5xl font-bold text-orange-600">
-                        {item.stock}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6 text-center">
-                      <span className={`px-6 py-3 rounded-full text-lg font-bold ${getStatusColor(item.status)}`}>
-                        {getStatusText(item.status)}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6 text-center">
-                      <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl font-bold text-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg hover:shadow-xl">
-                        Reorder
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Pantry Items Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredItems.map(item => (
+            <div 
+              key={item.id} 
+              className={`border-4 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all hover:scale-105 ${getStockColor(item.status)}`}
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-bold mb-3">{item.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-semibold">Stock:</span>
+                    <span className="text-3xl font-black">{item.stock}</span>
+                  </div>
+                </div>
+                <div className="text-5xl">
+                  {item.status === 'low' && '⚠️'}
+                  {item.status === 'good' && '✅'}
+                  {item.status === 'excellent' && '⭐'}
+                </div>
+              </div>
+              <div className="mt-4">
+                <span className={`px-4 py-2 rounded-full text-xs font-bold uppercase ${
+                  item.status === 'low' ? 'bg-red-500 text-white' :
+                  item.status === 'good' ? 'bg-yellow-500 text-white' :
+                  'bg-green-500 text-white'
+                }`}>
+                  {item.status} STOCK
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
 
         {filteredItems.length === 0 && (
-          <div className="text-center py-20 bg-white rounded-3xl shadow-lg mt-10">
-            <p className="text-3xl text-gray-600">No items found in this category.</p>
+          <div className="text-center py-20 bg-white rounded-3xl shadow-xl">
+            <p className="text-2xl text-gray-600">No items in this category</p>
           </div>
         )}
-
-        {/* Summary Footer */}
-        <div className="mt-10 bg-gradient-to-r from-orange-400 to-red-400 rounded-3xl p-8 text-white text-center">
-          <p className="text-3xl font-bold">
-            Showing {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''} 
-            {selectedCategory !== 'all' && ` in ${categories.find(c => c.id === selectedCategory)?.name}`}
-          </p>
-        </div>
       </div>
     </div>
   );

@@ -51,6 +51,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* Entry Animation - NO LOGOUT BUTTON */}
       {currentPage === 'entry' && (
         <EntryAnimation onAnimationComplete={handleAnimationComplete} />
       )}
@@ -62,14 +63,20 @@ function App() {
         />
       )}
       
+      {/* About Page - WITH LOGOUT BUTTON */}
       {currentPage === 'about' && (
-        <AboutPage setCurrentPage={setCurrentPage} />
+        <AboutPage 
+          setCurrentPage={setCurrentPage}
+          setIsLoggedIn={setIsLoggedIn}
+          isLoggedIn={isLoggedIn}
+        />
       )}
       
-      {/* Protected Routes - Only accessible when logged in */}
+      {/* Protected Routes - Only accessible when logged in - ALL WITH LOGOUT BUTTONS */}
       {currentPage === 'groceries' && isLoggedIn && (
         <GroceriesPage 
           setCurrentPage={setCurrentPage}
+          setIsLoggedIn={setIsLoggedIn}
           addToCart={addToCart}
         />
       )}
@@ -77,6 +84,7 @@ function App() {
       {currentPage === 'pantry' && isLoggedIn && (
         <PantryPage 
           setCurrentPage={setCurrentPage}
+          setIsLoggedIn={setIsLoggedIn}
           pantryItems={pantryItems}
         />
       )}
@@ -84,6 +92,7 @@ function App() {
       {currentPage === 'notifications' && isLoggedIn && (
         <NotificationsPage 
           setCurrentPage={setCurrentPage}
+          setIsLoggedIn={setIsLoggedIn}
           notifications={notifications}
         />
       )}
@@ -97,7 +106,7 @@ function App() {
         />
       )}
       
-      {/* Auth Routes */}
+      {/* Auth Routes - NO LOGOUT BUTTONS (user not logged in yet) */}
       {currentPage === 'signin' && (
         <SignInPage 
           setCurrentPage={setCurrentPage}

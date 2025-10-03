@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 
-const GroceriesPage = ({ addToCart, setCurrentPage }) => {
+const GroceriesPage = ({ addToCart, setCurrentPage, setIsLoggedIn }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentPage('home');
+  };
 
   const groceryItems = [
     // Bakery
@@ -47,30 +52,41 @@ const GroceriesPage = ({ addToCart, setCurrentPage }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <div className="max-w-[95%] mx-auto px-8 py-12">
-        {/* Header with Title and Back Button */}
-        <div className="flex items-center justify-between mb-12">
-          <h1 className="text-7xl font-black">
+        {/* Header with Title, Back Button and Logout */}
+        <div className="flex items-center justify-between mb-10">
+          <h1 className="text-5xl font-black">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
               Pulse360AI
             </span>
           </h1>
-          <button
-            onClick={() => setCurrentPage('home')}
-            className="flex items-center gap-3 px-8 py-4 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            <ArrowLeft size={28} className="text-orange-600" />
-            <span className="text-xl font-semibold text-orange-600">Back to Home</span>
-          </button>
+          
+          <div className="flex gap-4">
+            <button
+              onClick={() => setCurrentPage('home')}
+              className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            >
+              <ArrowLeft size={20} className="text-orange-600" />
+              <span className="text-base font-semibold text-orange-600">Back to Home</span>
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-6 py-3 bg-red-600 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 hover:bg-red-700"
+            >
+              <LogOut size={20} className="text-white" />
+              <span className="text-base font-semibold text-white">Logout</span>
+            </button>
+          </div>
         </div>
 
-        <h2 className="text-7xl font-bold text-center mb-16 text-orange-600">Fresh Groceries</h2>
-        
-        <div className="flex flex-wrap justify-center gap-6 mb-16">
+        <h2 className="text-4xl font-bold mb-10 text-orange-600 text-center">Browse Groceries</h2>
+
+        <div className="flex flex-wrap gap-4 justify-center mb-10">
           {['all', 'bakery', 'dairy', 'vegetables', 'protein', 'pantry', 'household', 'personal-care'].map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-4 rounded-full text-2xl font-semibold transition-all ${
+              className={`px-5 py-3 rounded-full text-lg font-semibold transition-all ${
                 selectedCategory === cat 
                   ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-110 shadow-xl' 
                   : 'bg-white text-orange-600 hover:bg-orange-100 shadow-md'
@@ -87,10 +103,10 @@ const GroceriesPage = ({ addToCart, setCurrentPage }) => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
           {filteredItems.map(item => (
-            <div key={item.id} className="bg-white rounded-3xl p-6 hover:scale-105 transition-all shadow-xl hover:shadow-2xl">
-              <div className="mb-6 h-52 overflow-hidden rounded-2xl bg-white flex items-center justify-center p-3">
+            <div key={item.id} className="bg-white rounded-3xl p-5 hover:scale-105 transition-all shadow-xl hover:shadow-2xl">
+              <div className="mb-5 h-40 overflow-hidden rounded-2xl bg-white flex items-center justify-center p-3">
                 <img 
                   src={item.image} 
                   alt={item.name}
@@ -100,10 +116,10 @@ const GroceriesPage = ({ addToCart, setCurrentPage }) => {
                   }}
                 />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-center text-gray-800">{item.name}</h3>
+              <h3 className="text-xl font-bold mb-4 text-center text-gray-800">{item.name}</h3>
               <button 
                 onClick={() => addToCart(item)}
-                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-2xl font-bold text-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-2xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg"
               >
                 Add to Cart
               </button>
