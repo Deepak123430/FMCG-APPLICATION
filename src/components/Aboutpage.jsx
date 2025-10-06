@@ -65,23 +65,13 @@ const AboutPage = ({ setCurrentPage, setIsLoggedIn, isLoggedIn }) => {
             </span>
           </h1>
           
-          <div className="flex gap-4">
-            <button
-              onClick={() => setCurrentPage('home')}
-              className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-            >
-              <ArrowLeft size={22} className="text-orange-600" />
-              <span className="text-lg font-semibold text-orange-600">Back to Home</span>
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-6 py-3 bg-red-600 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 hover:bg-red-700"
-            >
-              <LogOut size={22} className="text-white" />
-              <span className="text-lg font-semibold text-white">Logout</span>
-            </button>
-          </div>
+          <button
+            onClick={() => setCurrentPage('home')}
+            className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+          >
+            <ArrowLeft size={22} className="text-orange-600" />
+            <span className="text-lg font-semibold text-orange-600">Back to Home</span>
+          </button>
         </div>
 
         <div className="text-center mb-14">
