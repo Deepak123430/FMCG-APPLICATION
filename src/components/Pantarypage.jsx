@@ -86,7 +86,7 @@ const PantryPage = ({ setCurrentPage, setIsLoggedIn, pantryItems }) => {
           </div>
         </div>
 
-        <h2 className="text-4xl font-bold mb-10 text-orange-600 text-center">My Pantry</h2>
+        <h2 className="text-5xl font-bold mb-10 text-orange-600 text-center">My Pantry</h2>
 
         {/* Category Filter */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
@@ -94,7 +94,7 @@ const PantryPage = ({ setCurrentPage, setIsLoggedIn, pantryItems }) => {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`p-5 rounded-3xl font-semibold transition-all ${
+              className={`p-5 rounded-3xl font-semibold transition-all text-lg ${
                 selectedCategory === cat.id
                   ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl scale-105'
                   : 'bg-white text-orange-600 hover:bg-orange-100 shadow-md'
@@ -115,10 +115,10 @@ const PantryPage = ({ setCurrentPage, setIsLoggedIn, pantryItems }) => {
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="text-xl font-bold mb-3">{item.name}</h3>
+                  <h3 className="text-2xl font-bold mb-3">{item.name}</h3>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-semibold">Stock:</span>
-                    <span className="text-3xl font-black">{item.stock}</span>
+                    <span className="text-xl font-semibold">Stock:</span>
+                    <span className="text-4xl font-black">{item.stock}</span>
                   </div>
                 </div>
                 <div className="text-5xl">

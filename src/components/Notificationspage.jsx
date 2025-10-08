@@ -150,8 +150,8 @@ const NotificationsPage = ({ setCurrentPage, setIsLoggedIn, notifications }) => 
         {/* Page Header */}
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-4xl font-bold text-orange-600 mb-3">Notifications</h2>
-            <p className="text-xl text-gray-600">
+            <h2 className="text-5xl font-bold text-orange-600 mb-3">Notifications</h2>
+            <p className="text-2xl text-gray-600">
               You have {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
             </p>
           </div>
@@ -177,7 +177,7 @@ const NotificationsPage = ({ setCurrentPage, setIsLoggedIn, notifications }) => 
             <button
               key={filterOption.id}
               onClick={() => setFilter(filterOption.id)}
-              className={`px-5 py-3 rounded-full text-lg font-semibold transition-all ${
+              className={`px-6 py-3 rounded-full text-xl font-semibold transition-all ${
                 filter === filterOption.id
                   ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-orange-600 hover:bg-orange-100 shadow-md'
@@ -201,34 +201,34 @@ const NotificationsPage = ({ setCurrentPage, setIsLoggedIn, notifications }) => 
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-2xl font-bold text-gray-800">{notification.title}</h3>
+                    <h3 className="text-3xl font-bold text-gray-800">{notification.title}</h3>
                     {!notification.read && (
-                      <span className="bg-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full">
+                      <span className="bg-orange-500 text-white text-base font-bold px-4 py-1.5 rounded-full">
                         NEW
                       </span>
                     )}
                   </div>
-                  <p className="text-lg text-gray-600 mb-3">{notification.message}</p>
-                  <p className="text-base text-gray-500 mb-4">{notification.time}</p>
+                  <p className="text-xl text-gray-600 mb-3">{notification.message}</p>
+                  <p className="text-lg text-gray-500 mb-4">{notification.time}</p>
                   
                   {/* Accept/Deny Buttons */}
                   {notification.status === 'pending' ? (
                     <div className="flex gap-3">
                       <button
                         onClick={() => handleAccept(notification.id)}
-                        className="px-6 py-2 bg-green-500 text-white rounded-xl font-bold text-base hover:bg-green-600 transition-colors shadow-md"
+                        className="px-6 py-2 bg-green-500 text-white rounded-xl font-bold text-lg hover:bg-green-600 transition-colors shadow-md"
                       >
                         ✓ Accept
                       </button>
                       <button
                         onClick={() => handleDeny(notification.id)}
-                        className="px-6 py-2 bg-red-500 text-white rounded-xl font-bold text-base hover:bg-red-600 transition-colors shadow-md"
+                        className="px-6 py-2 bg-red-500 text-white rounded-xl font-bold text-lg hover:bg-red-600 transition-colors shadow-md"
                       >
                         ✗ Deny
                       </button>
                     </div>
                   ) : (
-                    <div className={`inline-block px-6 py-2 rounded-xl font-bold text-base ${
+                    <div className={`inline-block px-6 py-2 rounded-xl font-bold text-lg ${
                       notification.status === 'accepted' 
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-red-100 text-red-700'

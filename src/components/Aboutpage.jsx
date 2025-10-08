@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronRight, X, ArrowLeft, LogOut } from 'lucide-react';
+import { ChevronRight, X, ArrowLeft } from 'lucide-react';
 
-const AboutPage = ({ setCurrentPage, setIsLoggedIn, isLoggedIn }) => {
+const AboutPage = ({ setCurrentPage }) => {
   const [selectedAboutFeature, setSelectedAboutFeature] = useState(null);
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentPage('home');
-  };
 
   const aboutFeatures = [
     {
@@ -57,14 +52,13 @@ const AboutPage = ({ setCurrentPage, setIsLoggedIn, isLoggedIn }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <div className="max-w-[95%] mx-auto px-8 py-12">
-        {/* Header with Title, Back Button and Logout */}
+        {/* Header with Title and Back Button */}
         <div className="flex items-center justify-between mb-12">
           <h1 className="text-6xl font-black">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
               Pulse360AI
             </span>
           </h1>
-          
           <button
             onClick={() => setCurrentPage('home')}
             className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
@@ -74,35 +68,35 @@ const AboutPage = ({ setCurrentPage, setIsLoggedIn, isLoggedIn }) => {
           </button>
         </div>
 
-        <div className="text-center mb-14">
-          <h2 className="text-5xl font-bold mb-6 text-orange-600">About Pulse360AI</h2>
-          <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+        <div className="text-center mb-16">
+          <h2 className="text-6xl font-bold mb-8 text-orange-600">About Pulse360AI</h2>
+          <p className="text-3xl text-gray-700 max-w-5xl mx-auto leading-relaxed">
             Pulse360AI is a revolutionary platform that combines artificial intelligence with everyday convenience. 
             Our mission is to create seamless, intelligent experiences that adapt to your needs and enhance your lifestyle.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {aboutFeatures.map((feature) => (
             <div 
               key={feature.id}
               onClick={() => setSelectedAboutFeature(feature)}
-              className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105"
+              className="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105"
             >
-              <div className="text-6xl mb-6">{feature.icon}</div>
-              <h3 className="text-3xl font-bold mb-4 text-orange-600">{feature.title}</h3>
-              <p className="text-lg text-gray-600 mb-5 leading-relaxed">{feature.description}</p>
+              <div className="text-7xl mb-7">{feature.icon}</div>
+              <h3 className="text-4xl font-bold mb-5 text-orange-600">{feature.title}</h3>
+              <p className="text-xl text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
               <div className="flex items-center text-orange-500 font-semibold">
-                <span className="text-base">Click to learn more</span>
-                <ChevronRight className="ml-2" size={20} />
+                <span className="text-lg">Click to learn more</span>
+                <ChevronRight className="ml-2" size={24} />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="bg-white rounded-3xl p-12 mb-12 shadow-2xl">
-          <h2 className="text-4xl font-bold mb-6 text-orange-600 text-center">Our Vision</h2>
-          <p className="text-2xl text-gray-700 leading-relaxed text-center max-w-4xl mx-auto">
+        <div className="bg-white rounded-3xl p-14 mb-16 shadow-2xl">
+          <h2 className="text-5xl font-bold mb-8 text-orange-600 text-center">Our Vision</h2>
+          <p className="text-3xl text-gray-700 leading-relaxed text-center max-w-5xl mx-auto">
             We envision a future where artificial intelligence seamlessly integrates into daily life, 
             making technology accessible and beneficial for everyone.
           </p>

@@ -1,90 +1,276 @@
-import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 const SignUpPage = ({ setCurrentPage, setIsLoggedIn }) => {
-  const [formData, setFormData] = useState({ 
-    name: '', 
-    email: '', 
-    password: '', 
-    confirmPassword: '' 
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   });
+  const [error, setError] = useState('');
 
+  // ✅ Pre-register default admin and user accounts
+  useEffect(() => {
+    const initializeAccounts = () => {
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      const accountsToCreate = [
+        {
+          username: 'ravideepakthumu',
+          email: 'ravideepakthumu@gmail.com',
+          password: 'admin123',
+          role: 'admin'
+        },
+        {
+          username: 'deepaknaidu',
+          email: 'deepaknaidu8790@gmail.com',
+          password: 'user123',
+          role: 'user'
+        }
+      ];
+
+      let accountsCreated = false;
+
+      accountsToCreate.forEach(acc => {
+        const exists = users.some(u => u.email === acc.email);
+        if (!exists) {
+          users.push({
+            id: Date.now() + Math.random(),
+            ...acc,
+            createdAt: new Date().toISOString()
+          });
+          accountsCreated = true;
+        }
+      });
+
+      if (accountsCreated) {
+        localStorage.setItem('users', JSON.stringify(users));
+        console.log('✅ Pre-registered accounts created!');
+      }
+    };
+
+    initializeAccounts();
+  }, []);
+
+  // ✅ Handle input change
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
+  };
+
+  // ✅ Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.password === formData.confirmPassword) {
-      setIsLoggedIn(true);
-      setCurrentPage('home');
-    } else {
-      alert('Passwords do not match!');
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match!');
+      return;
     }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters!');
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userExists = users.find(
+      u => u.username === formData.username || u.email === formData.email
+    );
+
+    if (userExists) {
+      setError('Username or email already exists!');
+      return;
+    }
+
+    const newUser = {
+      id: Date.now(),
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      role: 'user',
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    const userSession = {
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role
+    };
+
+    setIsLoggedIn(userSession);
+    alert('Account created successfully! Welcome 🎉');
+    setCurrentPage('home');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex items-center justify-center py-12">
-      <div className="max-w-3xl w-full mx-auto px-8">
-        <div className="flex items-center justify-between mb-10">
-          <h1 className="text-6xl font-black">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
-              Pulse360AI
-            </span>
-          </h1>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #c2410c 0%, #9a3412 100%)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px'
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '16px',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          maxWidth: '500px',
+          width: '100%',
+          padding: '50px'
+        }}
+      >
+        <h2
+          style={{
+            fontSize: '42px',
+            fontWeight: 'bold',
+            color: '#1f2937',
+            marginBottom: '15px',
+            textAlign: 'center'
+          }}
+        >
+          Create Account 🚀
+        </h2>
+
+        <p
+          style={{
+            color: '#6b7280',
+            textAlign: 'center',
+            marginBottom: '35px',
+            fontSize: '18px'
+          }}
+        >
+          Join us today!
+        </p>
+
+        {error && (
+          <div
+            style={{
+              backgroundColor: '#fee2e2',
+              border: '1px solid #fca5a5',
+              color: '#991b1b',
+              padding: '14px',
+              borderRadius: '8px',
+              marginBottom: '25px',
+              fontSize: '16px',
+              fontWeight: '500'
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          {['username', 'email', 'password', 'confirmPassword'].map((field) => (
+            <div key={field} style={{ marginBottom: '20px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  color: '#374151',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontSize: '16px'
+                }}
+              >
+                {field === 'confirmPassword'
+                  ? 'Confirm Password'
+                  : field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              <input
+                type={
+                  field === 'password' || field === 'confirmPassword'
+                    ? 'password'
+                    : field === 'email'
+                    ? 'email'
+                    : 'text'
+                }
+                name={field}
+                value={formData[field]}
+                onChange={handleInputChange}
+                required
+                minLength={field.includes('password') ? 6 : undefined}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '18px',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => (e.target.style.borderColor = '#c2410c')}
+                onBlur={(e) => (e.target.style.borderColor = '#e5e7eb')}
+              />
+            </div>
+          ))}
+
+          <button
+            type="submit"
+            style={{
+              width: '100%',
+              background: 'linear-gradient(135deg, #c2410c 0%, #9a3412 100%)',
+              color: 'white',
+              padding: '16px',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '25px'
+            }}
+          >
+            Create Account
+          </button>
+        </form>
+
+        <p
+          style={{
+            textAlign: 'center',
+            color: '#6b7280',
+            fontSize: '16px'
+          }}
+        >
+          Already have an account?{' '}
           <button
             onClick={() => setCurrentPage('signin')}
-            className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            style={{
+              color: '#c2410c',
+              fontWeight: 'bold',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '16px'
+            }}
           >
-            <ArrowLeft size={22} className="text-orange-600" />
-            <span className="text-lg font-semibold text-orange-600">Back to Sign In</span>
+            Sign In
           </button>
-        </div>
+        </p>
 
-        <div className="bg-white rounded-3xl p-12 shadow-2xl">
-          <h2 className="text-5xl font-bold text-center mb-10 text-orange-600">Create Account</h2>
-          <div className="space-y-5">
-            <input
-              type="text"
-              placeholder="Full Name"
-              className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-            />
-            <input
-              type="email"
-              placeholder="Email Address"
-              className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-            />
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-bold text-2xl hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 shadow-xl"
-            >
-              Create Account
-            </button>
-          </div>
-          <p className="text-center mt-8 text-xl text-gray-700">
-            Already have an account?{' '}
-            <button 
-              onClick={() => setCurrentPage('signin')} 
-              className="text-orange-600 hover:underline font-semibold"
-            >
-              Sign In
-            </button>
-          </p>
-        </div>
+        <button
+          onClick={() => setCurrentPage('home')}
+          style={{
+            width: '100%',
+            marginTop: '20px',
+            backgroundColor: '#f3f4f6',
+            color: '#374151',
+            padding: '14px',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          ← Back to Home
+        </button>
       </div>
     </div>
   );

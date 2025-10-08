@@ -1,143 +1,216 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
 
 const SignInPage = ({ setCurrentPage, setIsLoggedIn }) => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    setError('');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
+    setError('');
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    const user = users.find(
+      u => u.email === formData.email && u.password === formData.password
+    );
+
+    if (!user) {
+      setError('Invalid email or password!');
+      return;
+    }
+
+    const userSession = { 
+      id: user.id, 
+      username: user.username, 
+      email: user.email,
+      role: user.role || 'user'
+    };
+    
+    setIsLoggedIn(userSession);
+    
+    alert(`Welcome back, ${user.username}!`);
     setCurrentPage('home');
   };
 
-  const handleForgotPassword = (e) => {
-    e.preventDefault();
-    if (resetEmail) {
-      alert(`Password reset link has been sent to ${resetEmail}. Please check your email.`);
-      setShowForgotPassword(false);
-      setResetEmail('');
-    } else {
-      alert('Please enter your email address');
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex items-center justify-center py-12">
-      <div className="max-w-3xl w-full mx-auto px-8">
-        {/* Header with Title and Back Button */}
-        <div className="flex items-center justify-between mb-10">
-          <h1 className="text-6xl font-black">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-pink-600">
-              Pulse360AI
-            </span>
-          </h1>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #c2410c 0%, #9a3412 100%)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+        maxWidth: '500px',
+        width: '100%',
+        padding: '50px'
+      }}>
+        <h2 style={{
+          fontSize: '42px',
+          fontWeight: 'bold',
+          color: '#1f2937',
+          marginBottom: '15px',
+          textAlign: 'center'
+        }}>
+          Welcome Back! 👋
+        </h2>
+        <p style={{
+          color: '#6b7280',
+          textAlign: 'center',
+          marginBottom: '35px',
+          fontSize: '18px'
+        }}>
+          Sign in to access your account
+        </p>
+
+        {error && (
+          <div style={{
+            backgroundColor: '#fee2e2',
+            border: '1px solid #fca5a5',
+            color: '#991b1b',
+            padding: '14px',
+            borderRadius: '8px',
+            marginBottom: '25px',
+            fontSize: '16px',
+            fontWeight: '500'
+          }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '25px' }}>
+            <label style={{
+              display: 'block',
+              color: '#374151',
+              fontWeight: '600',
+              marginBottom: '10px',
+              fontSize: '16px'
+            }}>
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="your@email.com"
+              required
+              style={{
+                width: '100%',
+                padding: '14px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '18px',
+                boxSizing: 'border-box'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#c2410c'}
+              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
+          <div style={{ marginBottom: '25px' }}>
+            <label style={{
+              display: 'block',
+              color: '#374151',
+              fontWeight: '600',
+              marginBottom: '10px',
+              fontSize: '16px'
+            }}>
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+              style={{
+                width: '100%',
+                padding: '14px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '18px',
+                boxSizing: 'border-box'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#c2410c'}
+              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
           <button
-            onClick={() => setCurrentPage('home')}
-            className="flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            type="submit"
+            style={{
+              width: '100%',
+              background: 'linear-gradient(135deg, #c2410c 0%, #9a3412 100%)',
+              color: 'white',
+              padding: '16px',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginBottom: '25px'
+            }}
           >
-            <ArrowLeft size={22} className="text-orange-600" />
-            <span className="text-lg font-semibold text-orange-600">Back to Home</span>
+            Sign In
           </button>
-        </div>
+        </form>
 
-        <div className="bg-white rounded-3xl p-12 shadow-2xl">
-          {!showForgotPassword ? (
-            <>
-              <h2 className="text-5xl font-bold text-center mb-10 text-orange-600">Sign In</h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-xl font-semibold text-gray-700 mb-3">Email / Username</label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    required
-                  />
-                </div>
+        <p style={{
+          textAlign: 'center',
+          color: '#6b7280',
+          fontSize: '16px'
+        }}>
+          Don't have an account?{' '}
+          <button
+            onClick={() => setCurrentPage('signup')}
+            style={{
+              color: '#c2410c',
+              fontWeight: 'bold',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '16px'
+            }}
+          >
+            Sign Up
+          </button>
+        </p>
 
-                <div>
-                  <label className="block text-xl font-semibold text-gray-700 mb-3">Password</label>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-                    value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-bold text-2xl hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 shadow-xl"
-                >
-                  Sign In
-                </button>
-              </form>
-
-              <div className="flex items-center justify-between mt-8 px-2">
-                <button 
-                  onClick={() => setShowForgotPassword(true)}
-                  className="text-orange-600 hover:text-orange-700 text-lg font-semibold hover:underline transition-colors"
-                >
-                  Forgot Password?
-                </button>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-lg text-gray-600">Don't have an account?</span>
-                  <button 
-                    onClick={() => setCurrentPage('signup')} 
-                    className="text-orange-600 hover:text-orange-700 text-lg font-bold hover:underline transition-colors"
-                  >
-                    Create Account
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 className="text-5xl font-bold text-center mb-6 text-orange-600">Reset Password</h2>
-              <p className="text-center text-xl text-gray-600 mb-8">
-                Enter your email address and we'll send you a link to reset your password.
-              </p>
-              
-              <form onSubmit={handleForgotPassword} className="space-y-6">
-                <div>
-                  <label className="block text-xl font-semibold text-gray-700 mb-3">Email Address</label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-6 py-4 rounded-2xl bg-orange-50 text-gray-800 placeholder-gray-500 text-lg focus:outline-none focus:ring-3 focus:ring-orange-300"
-                    value={resetEmail}
-                    onChange={(e) => setResetEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-bold text-2xl hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 shadow-xl"
-                >
-                  Send Reset Link
-                </button>
-              </form>
-
-              <div className="text-center mt-6">
-                <button 
-                  onClick={() => setShowForgotPassword(false)}
-                  className="text-orange-600 hover:text-orange-700 text-lg font-semibold hover:underline transition-colors"
-                >
-                  Back to Sign In
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        <button
+          onClick={() => setCurrentPage('home')}
+          style={{
+            width: '100%',
+            marginTop: '20px',
+            backgroundColor: '#f3f4f6',
+            color: '#374151',
+            padding: '14px',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          ← Back to Home
+        </button>
       </div>
     </div>
   );

@@ -22,26 +22,26 @@ const EntryAnimation = ({ onAnimationComplete }) => {
       <div className="relative z-10 text-center max-w-5xl px-8">
         {/* Logo/Icon Animation */}
         <div className="mb-10 animate-bounce-in">
-          <div className="text-7xl mb-5 animate-rotate-scale">
+          <div className="text-9xl mb-5 animate-rotate-scale">
             🛒
           </div>
         </div>
 
         {/* Title Animation */}
-        <h1 className="text-6xl font-black text-white mb-5 animate-slide-up">
+        <h1 className="text-8xl font-black text-white mb-8 animate-slide-up">
           <span className="inline-block animate-fade-in-up" style={{ animationDelay: '0.3s' }}>Pulse</span>
           <span className="inline-block animate-fade-in-up text-cyan-300" style={{ animationDelay: '0.6s' }}>360</span>
           <span className="inline-block animate-fade-in-up" style={{ animationDelay: '0.9s' }}>AI</span>
         </h1>
 
         {/* Subtitle Animation */}
-        <p className="text-2xl text-white/90 font-medium animate-fade-in mb-10" style={{ animationDelay: '1.2s' }}>
+        <p className="text-4xl text-white/90 font-medium animate-fade-in mb-12" style={{ animationDelay: '1.2s' }}>
           Your Smart Grocery Partner
         </p>
 
         {/* Overview Text */}
-        <div className="animate-fade-in-up mt-10 bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl" style={{ animationDelay: '1.8s' }}>
-          <p className="text-xl text-white/95 leading-relaxed">
+        <div className="animate-fade-in-up mt-10 bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 shadow-2xl" style={{ animationDelay: '1.8s' }}>
+          <p className="text-2xl text-white/95 leading-relaxed">
             Experience the future of grocery shopping with AI-powered inventory management, 
             smart notifications, and personalized pantry tracking. 
             Never run out of essentials again!
@@ -51,11 +51,11 @@ const EntryAnimation = ({ onAnimationComplete }) => {
         {/* Loading indicator */}
         <div className="mt-12 animate-fade-in" style={{ animationDelay: '2.2s' }}>
           <div className="flex justify-center gap-3">
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-4 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
           </div>
-          <p className="text-lg text-white/80 mt-5 animate-pulse">Loading your experience...</p>
+          <p className="text-2xl text-white/80 mt-5 animate-pulse">Loading your experience...</p>
         </div>
       </div>
 
